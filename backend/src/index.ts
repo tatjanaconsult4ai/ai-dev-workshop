@@ -32,21 +32,24 @@ app.get("/users", (req, res) => {
   res.json(user ?? null);
 });
 
-// ❌ Absichtlicher Bug: Request body kann fehlen → Crash beim Zugriff auf name.trim()
 app.post("/users", (req, res) => {
   const { email, name } = req.body;
 
-  // Absichtlich KEINE Validierung
+  if (!email || !name) {
+    return res.status(400).json({ error: "Email and name required" });
+  }
+
   const id = String(users.length + 1);
   const newUser: User = {
     id,
     email,
-    name: name.trim(), // <- wenn name undefined → TypeError
+    name: name.trim(),
   };
 
   users.push(newUser);
   res.status(201).json(newUser);
 });
+
 
 const port = 3001;
 app.listen(port, () => {
