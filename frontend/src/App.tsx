@@ -68,6 +68,6 @@ export default function App() {
 }
 
 function UnsafeHtml({ html }: { html: string }) {
-  // Absichtlich unsicher:
-  return <div dangerouslySetInnerHTML={{ __html: html }} />;
+  // FIX: HTML nicht als HTML rendern, sondern als Text
+  return <pre style={{ whiteSpace: "pre-wrap" }}>{html}</pre>;
 }
